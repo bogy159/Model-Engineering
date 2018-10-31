@@ -50,6 +50,12 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="commands" upperBound="-1" eType="#//Command" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Command">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore">
+      <details key="constraints" value="regularTransCount"/>
+    </eAnnotations>
+    <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot">
+      <details key="regularTransCount" value="self.outgoingTransitions -> collect(oclIsKindOf(Regular)) -> size() &lt;= 1"/>
+    </eAnnotations>
     <eStructuralFeatures xsi:type="ecore:EReference" name="outgoingTransitions" upperBound="-1" eType="#//Transition" eOpposite="#//Transition/source"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="incomingTransitions" upperBound="-1" eType="#//Transition" eOpposite="#//Transition/target"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="components" upperBound="-1" eType="#//Component"/>
@@ -63,20 +69,46 @@
         transient="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Wait" eSuperTypes="#//Command">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore">
+      <details key="constraints" value="timeNotNegative"/>
+    </eAnnotations>
+    <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot">
+      <details key="timeNotNegative" value="self.time >= 0"/>
+    </eAnnotations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="time" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="timeUnit" lowerBound="1" eType="#//Time"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Move" eSuperTypes="#//Command">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore">
+      <details key="constraints" value="velocityNotZero indefinitelyTrigg"/>
+    </eAnnotations>
+    <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot">
+      <details key="velocityNotZero" value="self.velocity &lt;> 0"/>
+      <details key="indefinitelyTrigg" value="if length = null then Move.outgoingTransitions.oclIsKindOf(Triggered) = true else false endif"/>
+    </eAnnotations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="length" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="velocity" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="lengthUnit" eType="#//Length"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="velocityUnit" lowerBound="1" eType="#//Velocity"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Rotate" eSuperTypes="#//Command">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore">
+      <details key="constraints" value="angleBelow360"/>
+    </eAnnotations>
+    <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot">
+      <details key="angleBelow360" value="self.angle &lt; 360"/>
+    </eAnnotations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="angle" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="angleUnit" lowerBound="1" eType="#//Angle"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Terminate" eSuperTypes="#//Command"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Terminate" eSuperTypes="#//Command">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore">
+      <details key="constraints" value="noOutTransitions"/>
+    </eAnnotations>
+    <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot">
+      <details key="noOutTransitions" value="self.outgoingTransitions -> isEmpty()"/>
+    </eAnnotations>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Repeat" eSuperTypes="#//Command">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="numberOfReps" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
   </eClassifiers>
