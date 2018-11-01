@@ -1,0 +1,39 @@
+Opisanie na constraints:
+
+1.Proverqva vsichki komponenti na Rover i dali te imat razlichni imena. Pravi se s cel vsqko ime na komponent da e unikalno:
+invariant uniqueComponentNames: self.components -> forAll(c1, c2 | c1 <> c2 implies c1.name <> c2.name);
+
+2.Proverqva vsichi instancii na Rover dali nqkoq ot tqh e ot vid(Kind) Motor. Ako takuv sushtestvuva, vsichko e tochno. Poneje e neobhodimo da ima pone edin motor v robota:
+invariant minNumberMotors: Rover.allInstances()->exists(m | m.oclIsKindOf(Motor) = true);
+
+3.Kogato v klasa Command ima nqkolko Outgoing Transitions, togava samo edna ot tqh moje da e Regular, drugite trqbva da sa Triggered. 
+Tozi constraint vzima vsichki izhodqshti tranzicii ot tip Regular i sravnqva broqt im. Broqt im trqbva da e raven ili po-mauk ot 1:
+invariant regularTransCount: self.outgoingTransitions -> collect(oclIsKindOf(Regular)) -> size() <= 1;
+
+4.Kakto e opisano po uslovie, kogato rabotim s vreme, to nikoga ne trqbva da e s otricatelna stoinost. 
+Poneje izpolzvame vreme samo v class Wait, to tam proverqvame atributa Time dali e po-golqm ili raven na 0:
+invariant timeNotNegative: self.time >= 0;
+
+5.Tuk podobno na predniq konstraint imam po uslovie che Velocity trqbva da e razlichno ot 0; Nego go polzvame samo v class Move, atribut Velocity. 
+Sytvetno proveqvame dali e razlichen ot 0:
+invariant velocityNotZero: self.velocity <> 0;
+
+6.Tozi constraint moje bi e greshen! Negovata cel e, ako na komandata Move ne e zadadena duljina, to sledvashtiq transition trqbva da e Triggered. 
+Polzvam If Statement za da proverq purvo, dali attribute Length e Null i dali vsichki outgoingTransitions sa ot vid Triggered. 
+Ako tova e taka, vrushta True. ako ne e taka, proverqvam dali sluchaino ne e zadadena nqkakva duljina i pak vrushtam True. Vuv vsichki ostanali sluchai vrushtam False:
+invariant indefinitelyTrigg: if length = null and Move.allInstances()->forAll(m | m.oclIsKindOf(Triggered) = true) then true elseif length <> null then true else false endif;
+
+7.Tozi constraint go nqmashe tochno v uslovieto, no predpolojih che e logichen. Ako sluchaino rabotim s ugli s merna edinica gradusi, to te trqbva da sa po-malki ot 360.
+Suotvetno proverqvame atributa Angle, koito se sudurja v class Rotate:
+invariant angleBelow360: self.angle < 360;
+
+8.Ot klasa Terminate ne biva da ima izhodqshti tranzicii. 
+Tova moje bi stava qsno i bez da se pravi constraint, no taka ili inache koda proverwa izrichno che outgoingTransitions ne sushtestvuvat:
+invariant noOutTransitions: self.outgoingTransitions -> isEmpty();
+
+Imah oshte 2 idei za constraint, no ne mojeh da izmislq tochno kak da gi formuliram. Naprimer za vechniq repeat, kogato negoviq Count e raven na -1. 
+Nqmam ideq kak da zadam vechen cikul ili kakto ta trqbva da se napravi tova chudo.
+Otnosno "The sensor should fit the type of the triggered transition, i.e. a distance sensor trigger may only reference a distance sensor." 
+Tova mai sushto se podrazbira ot relaciite i za nego mai ne e neobhodim constraint.
+Za "Rotate command cannot be used twice in a row." si misleh neshto ot sorta na primera ot lekciite s tova kak chovek ne moje da si e sam dete na sebe si.
+Prosto da se zabranqt Outgoing Transition ot Rotate kum Rotate. Ne sum go implementiral.
