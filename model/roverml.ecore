@@ -34,14 +34,14 @@
   <eClassifiers xsi:type="ecore:EClass" name="Sensor" eSuperTypes="#//Component"/>
   <eClassifiers xsi:type="ecore:EClass" name="Actuator" eSuperTypes="#//Component"/>
   <eClassifiers xsi:type="ecore:EClass" name="GPS" eSuperTypes="#//Sensor">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="x"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="y"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="x" unique="false" upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloat"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="y" unique="false" upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloat"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Compass" eSuperTypes="#//Sensor">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="angle"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="angle" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="DistanceSensor" eSuperTypes="#//Sensor">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="distance"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="distance" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Motor" eSuperTypes="#//Actuator"/>
   <eClassifiers xsi:type="ecore:EClass" name="Light" eSuperTypes="#//Actuator"/>
@@ -65,10 +65,16 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="target" lowerBound="1" eType="#//Command" eOpposite="#//Command/incomingTransitions"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="SetLightColor" eSuperTypes="#//Command">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="color" transient="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="color" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EEnumerator" transient="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Wait" eSuperTypes="#//Command">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="time"/>
+  	<eAnnotations source="http://www.eclipse.org/emf/2002/Ecore">
+  		<details key="constraints" value="timeNotNegative"/>
+  	</eAnnotations>
+  	<eAnnotations source="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot">
+  		<details key="timeNotNegative" value="self.time >= 0"/>
+  	</eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="time" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="timeUnit" lowerBound="1" eType="#//Time"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Move" eSuperTypes="#//Command">
@@ -79,8 +85,8 @@
       <details key="velocityNotZero" value="self.velocity &lt;> 0"/>
       <details key="indefinitelyTrigg" value="if length = 0.0 and Move.allInstances()->forAll(m | m.oclIsKindOf(Triggered) = true) then true elseif length &lt;> 0.0 then true else false endif"/>
     </eAnnotations>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="length"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="velocity"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="length" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="velocity" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="lengthUnit" eType="#//Length"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="velocityUnit" lowerBound="1" eType="#//Velocity"/>
   </eClassifiers>
@@ -103,35 +109,35 @@
     </eAnnotations>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Repeat" eSuperTypes="#//Command">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="numberOfReps"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="numberOfReps" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Triggered" eSuperTypes="#//Transition">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="operator"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="operator" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EChar"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Regular" eSuperTypes="#//Transition"/>
   <eClassifiers xsi:type="ecore:EClass" name="DistanceSensorTrigger" eSuperTypes="#//Triggered">
     <eStructuralFeatures xsi:type="ecore:EReference" name="length" eType="#//Length"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="dist"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="dist" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="distancesensor" eType="#//DistanceSensor"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="CompassTrigger" eSuperTypes="#//Triggered">
     <eStructuralFeatures xsi:type="ecore:EReference" name="angles" eType="#//Angle"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="angle"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="angle" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="compass" eType="#//Compass"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="GPSTrigger" eSuperTypes="#//Triggered">
     <eStructuralFeatures xsi:type="ecore:EReference" name="position" eType="#//Position"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="x"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="y"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="x" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloat"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="y" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloat"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="gps" eType="#//GPS"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Quantity"/>
   <eClassifiers xsi:type="ecore:EClass" name="SingleQuantity" abstract="true" eSuperTypes="#//Quantity">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="units" transient="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="units" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EEnumerator" transient="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Position" eSuperTypes="#//Quantity">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="x"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="y"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="x" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloat"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="y" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloat"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Time" eSuperTypes="#//SingleQuantity"/>
   <eClassifiers xsi:type="ecore:EClass" name="Velocity" eSuperTypes="#//SingleQuantity"/>
