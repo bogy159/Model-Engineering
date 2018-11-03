@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<roverml:Wait
+    xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:roverml="http://www.example.org/roverml"
+    xsi:schemaLocation="http://www.example.org/roverml ../model/roverml.ecore"
+    time="6">
+  <timeUnit/>
+</roverml:Wait>
