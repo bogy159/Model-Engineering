@@ -104,9 +104,10 @@
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="velocity" lowerBound="1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="lengthUnit" eType="#//Length"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="velocityUnit" lowerBound="1"
-        eType="#//Velocity"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="velocityUnits" lowerBound="1"
+        eType="#//Velocity" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="lengthUnits" lowerBound="1"
+        eType="#//Length" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Rotate" eSuperTypes="#//Command">
     <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore">
@@ -116,8 +117,8 @@
       <details key="notRotateTwice" value="self.outgoingTransitions -> excludes(self)"/>
     </eAnnotations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="angle" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="angleUnit" lowerBound="1"
-        eType="#//Angle"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="angleUnits" lowerBound="1"
+        eType="#//Angle" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Terminate" eSuperTypes="#//Command">
     <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore">
@@ -162,10 +163,35 @@
         transient="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EEnum" name="TimeUnits" serializable="false">
-    <eLiterals name="Seconds"/>
-    <eLiterals name="Milliseconds"/>
+    <eLiterals name="NANOSECONDS"/>
+    <eLiterals name="MILLISECONDS"/>
+    <eLiterals name="SECONDS"/>
+    <eLiterals name="MINUTES"/>
+    <eLiterals name="HOURS"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Velocity" eSuperTypes="#//SingleQuantity"/>
-  <eClassifiers xsi:type="ecore:EClass" name="Length" eSuperTypes="#//SingleQuantity"/>
-  <eClassifiers xsi:type="ecore:EClass" name="Angle" eSuperTypes="#//SingleQuantity"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Velocity" eSuperTypes="#//SingleQuantity">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="units" lowerBound="1" eType="#//VelocityUnits"
+        transient="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="VelocityUnits" serializable="false">
+    <eLiterals name="MILLIMETERS_PER_SECOND"/>
+    <eLiterals name="CENTIMETERS_PER_SECOND"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Length" eSuperTypes="#//SingleQuantity">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="units" lowerBound="1" eType="#//LengthUnits"
+        transient="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="LengthUnits" serializable="false">
+    <eLiterals name="MILLIMETERS"/>
+    <eLiterals name="CENTIMETERS"/>
+    <eLiterals name="METERS"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Angle" eSuperTypes="#//SingleQuantity">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="units" lowerBound="1" eType="#//AngleUnits"
+        transient="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="AngleUnits" serializable="false">
+    <eLiterals name="RADIANS"/>
+    <eLiterals name="DEGREES"/>
+  </eClassifiers>
 </ecore:EPackage>
