@@ -18,6 +18,7 @@
     <semanticResources>../oclTests/Test8_invalid.xmi</semanticResources>
     <semanticResources>../oclTests/Test7_valid.xmi</semanticResources>
     <semanticResources>../oclTests/Test7_invalid.xmi</semanticResources>
+    <semanticResources>../oclTests/Curiousity.xmi</semanticResources>
     <ownedViews xmi:type="viewpoint:DView" xmi:id="_5DwqkNFPEei3pcwDVFB5Dg">
       <viewpoint xmi:type="description:Viewpoint" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']"/>
       <ownedRepresentationDescriptors xmi:type="viewpoint:DRepresentationDescriptor" xmi:id="_5HfUANFPEei3pcwDVFB5Dg" name="roverml" repPath="#_5GiRwNFPEei3pcwDVFB5Dg">
@@ -1648,7 +1649,7 @@
         <description xmi:type="style:FlatContainerStyleDescription" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']/@defaultLayer/@containerMappings[name='EC%20EClass']/@style"/>
       </ownedStyle>
       <actualMapping xmi:type="description_1:ContainerMapping" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']/@defaultLayer/@containerMappings[name='EC%20EClass']"/>
-      <ownedElements xmi:type="diagram:DNodeListElement" xmi:id="_8oICEN9ZEei3VMIukIrIoA" name="color : EEnumerator" tooltipText="">
+      <ownedElements xmi:type="diagram:DNodeListElement" xmi:id="_8oICEN9ZEei3VMIukIrIoA" name="color : Colours = NONE" tooltipText="">
         <target xmi:type="ecore:EAttribute" href="roverml.ecore#//SetLightColor/color"/>
         <semanticElements xmi:type="ecore:EAttribute" href="roverml.ecore#//SetLightColor/color"/>
         <ownedStyle xmi:type="diagram:BundledImage" xmi:id="_8oIpIN9ZEei3VMIukIrIoA" labelAlignment="LEFT" description="_NQwNsNFjEei3pcwDVFB5Dg">
