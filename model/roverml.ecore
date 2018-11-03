@@ -97,7 +97,7 @@
     <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot">
       <details key="notRotateTwice" value="self.outgoingTransitions -> excludes(self)"/>
     </eAnnotations>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="angle"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="angle" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="angleUnit" lowerBound="1" eType="#//Angle"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Terminate" eSuperTypes="#//Command">
