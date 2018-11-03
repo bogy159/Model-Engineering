@@ -28,7 +28,8 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Program" eSuperTypes="#//NamedElement">
     <eStructuralFeatures xsi:type="ecore:EReference" name="roverExec" eType="#//Rover"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="blocks" eType="#//Block"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="blocks" eType="#//Block"
+        containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="NamedElement" abstract="true">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
@@ -110,12 +111,6 @@
         eType="#//Length" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Rotate" eSuperTypes="#//Command">
-    <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore">
-      <details key="constraints" value="notRotateTwice"/>
-    </eAnnotations>
-    <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot">
-      <details key="notRotateTwice" value="self.outgoingTransitions -> excludes(self)"/>
-    </eAnnotations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="angle" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="angleUnits" lowerBound="1"
         eType="#//Angle" containment="true"/>
@@ -129,8 +124,16 @@
     </eAnnotations>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Repeat" eSuperTypes="#//Command">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore">
+      <details key="constraints" value="indefRepeats"/>
+    </eAnnotations>
+    <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot">
+      <details key="indefRepeats" value="if self.numberOfReps = -1 and self.outgoingTransitions -> select(t: Transition | t.source -> exists(m | m.oclIsTypeOf(Repeat) = true)) -> notEmpty() then true elseif &#xA;&#x9;&#x9;self.numberOfReps &lt;> -1 then true else false endif"/>
+    </eAnnotations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="numberOfReps" lowerBound="1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="commands" upperBound="-1"
+        eType="#//Command" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Triggered" eSuperTypes="#//Transition">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="operator" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EChar"/>
