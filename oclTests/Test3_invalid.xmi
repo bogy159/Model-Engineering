@@ -14,6 +14,12 @@
       source="//@commands.0"
       target="//@commands.0"/>
   <commands
-      outgoingTransitions="//@transitions.0 //@transitions.1"
-      incomingTransitions="//@transitions.0 //@transitions.1"/>
+      xsi:type="roverml:Move"
+      outgoingTransitions="//@transitions.1 //@transitions.0"
+      incomingTransitions="//@transitions.1 //@transitions.0"
+      length="5.0"
+      velocity="6.0">
+    <velocityUnits/>
+    <lengthUnits/>
+  </commands>
 </roverml:Block>

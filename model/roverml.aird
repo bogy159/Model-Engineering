@@ -6,7 +6,6 @@
     <semanticResources>../oclTests/Test1_invalid.xmi</semanticResources>
     <semanticResources>../oclTests/Test2_valid.xmi</semanticResources>
     <semanticResources>../oclTests/Test2_invalid.xmi</semanticResources>
-    <semanticResources>../oclTests/Test3_valid.xmi</semanticResources>
     <semanticResources>../oclTests/Test3_invalid.xmi</semanticResources>
     <semanticResources>../oclTests/Test4_valid.xmi</semanticResources>
     <semanticResources>../oclTests/Test4_invalid.xmi</semanticResources>
@@ -19,6 +18,7 @@
     <semanticResources>../oclTests/Test7_valid.xmi</semanticResources>
     <semanticResources>../oclTests/Test7_invalid.xmi</semanticResources>
     <semanticResources>../oclTests/Curiousity.xmi</semanticResources>
+    <semanticResources>../oclTests/Test3_valid.xmi</semanticResources>
     <ownedViews xmi:type="viewpoint:DView" xmi:id="_5DwqkNFPEei3pcwDVFB5Dg">
       <viewpoint xmi:type="description:Viewpoint" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']"/>
       <ownedRepresentationDescriptors xmi:type="viewpoint:DRepresentationDescriptor" xmi:id="_5HfUANFPEei3pcwDVFB5Dg" name="roverml" repPath="#_5GiRwNFPEei3pcwDVFB5Dg">
