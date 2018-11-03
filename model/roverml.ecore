@@ -28,7 +28,8 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Program" eSuperTypes="#//NamedElement">
     <eStructuralFeatures xsi:type="ecore:EReference" name="roverExec" eType="#//Rover"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="blocks" eType="#//Block"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="blocks" eType="#//Block"
+        containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="NamedElement" abstract="true">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
@@ -58,12 +59,6 @@
         eType="#//Command" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Command">
-    <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore">
-      <details key="constraints" value="regularTransCount"/>
-    </eAnnotations>
-    <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot">
-      <details key="regularTransCount" value="self.outgoingTransitions -> collect(oclIsKindOf(Regular)) -> size() &lt;= 1"/>
-    </eAnnotations>
     <eStructuralFeatures xsi:type="ecore:EReference" name="outgoingTransitions" upperBound="-1"
         eType="#//Transition" eOpposite="#//Transition/source"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="incomingTransitions" upperBound="-1"
@@ -78,15 +73,22 @@
         eType="#//Command" eOpposite="#//Command/incomingTransitions"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="SetLightColor" eSuperTypes="#//Command">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="color" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EEnumerator"
+    <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore">
+      <details key="constraints" value="regularTransCount"/>
+    </eAnnotations>
+    <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot">
+      <details key="regularTransCount" value="self.outgoingTransitions -> collect(oclIsKindOf(Regular)) -> size() &lt;= 1"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="color" lowerBound="1" eType="#//Colours"
         transient="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Wait" eSuperTypes="#//Command">
     <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore">
-      <details key="constraints" value="timeNotNegative"/>
+      <details key="constraints" value="timeNotNegative regularTransCount"/>
     </eAnnotations>
     <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot">
       <details key="timeNotNegative" value="self.time >= 0"/>
+      <details key="regularTransCount" value="self.outgoingTransitions -> collect(oclIsKindOf(Regular)) -> size() &lt;= 1"/>
     </eAnnotations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="time" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="timeUnit" lowerBound="1"
@@ -94,11 +96,12 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Move" eSuperTypes="#//Command">
     <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore">
-      <details key="constraints" value="velocityNotZero indefinitelyTrigg"/>
+      <details key="constraints" value="velocityNotZero indefinitelyTrigg regularTransCount"/>
     </eAnnotations>
     <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot">
       <details key="velocityNotZero" value="self.velocity &lt;> 0"/>
       <details key="indefinitelyTrigg" value="if length = 0.0 and Move.allInstances()->forAll(m | m.oclIsKindOf(Triggered) = true) then true elseif length &lt;> 0.0 then true else false endif"/>
+      <details key="regularTransCount" value="self.outgoingTransitions -> collect(oclIsKindOf(Regular)) -> size() &lt;= 1"/>
     </eAnnotations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="length" lowerBound="1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
@@ -111,10 +114,11 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Rotate" eSuperTypes="#//Command">
     <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore">
-      <details key="constraints" value="notRotateTwice"/>
+      <details key="constraints" value="notRotateTwice regularTransCount"/>
     </eAnnotations>
     <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot">
-      <details key="notRotateTwice" value="self.outgoingTransitions -> excludes(self)"/>
+      <details key="notRotateTwice" value="self.outgoingTransitions -> excludes(Rotate )"/>
+      <details key="regularTransCount" value="self.outgoingTransitions -> collect(oclIsKindOf(Regular)) -> size() &lt;= 1"/>
     </eAnnotations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="angle" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="angleUnits" lowerBound="1"
@@ -129,8 +133,16 @@
     </eAnnotations>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Repeat" eSuperTypes="#//Command">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore">
+      <details key="constraints" value="regularTransCount"/>
+    </eAnnotations>
+    <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot">
+      <details key="regularTransCount" value="self.outgoingTransitions -> collect(oclIsKindOf(Regular)) -> size() &lt;= 1"/>
+    </eAnnotations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="numberOfReps" lowerBound="1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="command" upperBound="-1"
+        eType="#//Command" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Triggered" eSuperTypes="#//Transition">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="operator" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EChar"/>
@@ -193,5 +205,12 @@
   <eClassifiers xsi:type="ecore:EEnum" name="AngleUnits" serializable="false">
     <eLiterals name="RADIANS"/>
     <eLiterals name="DEGREES"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="Colours" serializable="false">
+    <eLiterals name="NONE"/>
+    <eLiterals name="RED"/>
+    <eLiterals name="GREEN"/>
+    <eLiterals name="BLUE"/>
+    <eLiterals name="YELLOW"/>
   </eClassifiers>
 </ecore:EPackage>

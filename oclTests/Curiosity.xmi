@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<roverml:System
+    xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:roverml="http://www.example.org/roverml"
+    xsi:schemaLocation="http://www.example.org/roverml ../model/roverml.ecore"
+    name="Curiousity">
+  <programs
+      name="Mars">
+    <blocks>
+      <transitions
+          xsi:type="roverml:Regular"
+          source="//@programs.0/@blocks/@commands.0"
+          target="//@programs.0/@blocks/@commands.2"/>
+      <transitions
+          xsi:type="roverml:Regular"
+          source="//@programs.0/@blocks/@commands.2"
+          target="//@programs.0/@blocks/@commands.3"/>
+      <transitions
+          xsi:type="roverml:Regular"
+          source="//@programs.0/@blocks/@commands.3"
+          target="//@programs.0/@blocks/@commands.4"/>
+      <transitions
+          xsi:type="roverml:GPSTrigger"
+          source="//@programs.0/@blocks/@commands.2/@command.0"
+          target="//@programs.0/@blocks/@commands.2/@command.1"
+          gps="//@rovers.0/@components.4"/>
+      <transitions
+          xsi:type="roverml:DistanceSensorTrigger"
+          source="//@programs.0/@blocks/@commands.0"
+          target="//@programs.0/@blocks/@commands.1"
+          distancesensor="//@rovers.0/@components.3"/>
+      <transitions
+          xsi:type="roverml:DistanceSensorTrigger"
+          source="//@programs.0/@blocks/@commands.1"
+          target="//@programs.0/@blocks/@commands.2"
+          distancesensor="//@rovers.0/@components.3"/>
+      <transitions
+          xsi:type="roverml:CompassTrigger"
+          source="//@programs.0/@blocks/@commands.0"
+          target="//@programs.0/@blocks/@commands.4"/>
+      <commands
+          xsi:type="roverml:Move"
+          outgoingTransitions="//@programs.0/@blocks/@transitions.4 //@programs.0/@blocks/@transitions.6 //@programs.0/@blocks/@transitions.0"
+          components="//@rovers.0/@components.0"
+          length="20.0"
+          velocity="5.0">
+        <velocityUnits/>
+        <lengthUnits/>
+      </commands>
+      <commands
+          xsi:type="roverml:Wait"
+          outgoingTransitions="//@programs.0/@blocks/@transitions.5"
+          incomingTransitions="//@programs.0/@blocks/@transitions.4"
+          components="//@rovers.0/@components.0"
+          time="10">
+        <timeUnit/>
+      </commands>
+      <commands
+          xsi:type="roverml:Repeat"
+          outgoingTransitions="//@programs.0/@blocks/@transitions.1"
+          incomingTransitions="//@programs.0/@blocks/@transitions.5 //@programs.0/@blocks/@transitions.0"
+          components="//@rovers.0/@components.0 //@rovers.0/@components.2"
+          numberOfReps="5">
+        <command
+            xsi:type="roverml:SetLightColor"
+            outgoingTransitions="//@programs.0/@blocks/@transitions.3"
+            components="//@rovers.0/@components.2"/>
+        <command
+            xsi:type="roverml:SetLightColor"
+            incomingTransitions="//@programs.0/@blocks/@transitions.3"
+            components="//@rovers.0/@components.2"/>
+      </commands>
+      <commands
+          xsi:type="roverml:Rotate"
+          outgoingTransitions="//@programs.0/@blocks/@transitions.2"
+          incomingTransitions="//@programs.0/@blocks/@transitions.1"
+          components="//@rovers.0/@components.0 //@rovers.0/@components.1"
+          angle="60">
+        <angleUnits/>
+      </commands>
+      <commands
+          xsi:type="roverml:Terminate"
+          incomingTransitions="//@programs.0/@blocks/@transitions.6 //@programs.0/@blocks/@transitions.2"
+          components="//@rovers.0/@components.0"/>
+    </blocks>
+  </programs>
+  <rovers name="Curiosity">
+    <components
+        xsi:type="roverml:Motor"
+        name="mainMotor"/>
+    <components
+        xsi:type="roverml:Compass"
+        name="digiComp"/>
+    <components
+        xsi:type="roverml:Light"
+        name="Light1"/>
+    <components
+        xsi:type="roverml:DistanceSensor"
+        name="FrontSensor"/>
+    <components
+        xsi:type="roverml:GPS"
+        name="DigiPos">
+      <x>0.0</x>
+      <y>0.0</y>
+    </components>
+  </rovers>
+</roverml:System>
