@@ -1,216 +1,203 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="roverml" nsURI="http://www.example.org/roverml" nsPrefix="roverml">
-  <eAnnotations source="http://www.eclipse.org/OCL/Import">
-    <details key="ecore" value="http://www.eclipse.org/emf/2002/Ecore"/>
-  </eAnnotations>
-  <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore">
-    <details key="invocationDelegates" value="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot"/>
-    <details key="settingDelegates" value="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot"/>
-    <details key="validationDelegates" value="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot"/>
-  </eAnnotations>
-  <eClassifiers xsi:type="ecore:EClass" name="System" eSuperTypes="#//NamedElement">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="programs" upperBound="-1"
-        eType="#//Program" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="rovers" upperBound="-1"
-        eType="#//Rover" containment="true"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Rover" eSuperTypes="#//NamedElement">
-    <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore">
-      <details key="constraints" value="uniqueComponentNames minNumMotors"/>
-    </eAnnotations>
-    <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot">
-      <details key="uniqueComponentNames" value="self.components -> forAll(c1, c2 | c1 &lt;> c2 implies c1.name &lt;> c2.name)"/>
-      <details key="minNumMotors" value="self.components -> exists(m | m.oclIsTypeOf(Motor) = true)"/>
-    </eAnnotations>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="components" upperBound="-1"
-        eType="#//Component" containment="true"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Program" eSuperTypes="#//NamedElement">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="roverExec" eType="#//Rover"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="blocks" eType="#//Block"
-        containment="true"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="NamedElement" abstract="true">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Component" eSuperTypes="#//NamedElement"/>
-  <eClassifiers xsi:type="ecore:EClass" name="Sensor" eSuperTypes="#//Component"/>
-  <eClassifiers xsi:type="ecore:EClass" name="Actuator" eSuperTypes="#//Component"/>
-  <eClassifiers xsi:type="ecore:EClass" name="GPS" eSuperTypes="#//Sensor">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="x" unique="false" upperBound="-1"
-        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloat"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="y" unique="false" upperBound="-1"
-        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloat"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Compass" eSuperTypes="#//Sensor">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="angle" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="DistanceSensor" eSuperTypes="#//Sensor">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="distance" lowerBound="1"
-        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Motor" eSuperTypes="#//Actuator"/>
-  <eClassifiers xsi:type="ecore:EClass" name="Light" eSuperTypes="#//Actuator"/>
-  <eClassifiers xsi:type="ecore:EClass" name="Block">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="transitions" upperBound="-1"
-        eType="#//Transition" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="commands" upperBound="-1"
-        eType="#//Command" containment="true"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Command">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="outgoingTransitions" upperBound="-1"
-        eType="#//Transition" eOpposite="#//Transition/source"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="incomingTransitions" upperBound="-1"
-        eType="#//Transition" eOpposite="#//Transition/target"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="components" upperBound="-1"
-        eType="#//Component"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Transition">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="source" lowerBound="1"
-        eType="#//Command" eOpposite="#//Command/outgoingTransitions"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="target" lowerBound="1"
-        eType="#//Command" eOpposite="#//Command/incomingTransitions"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="SetLightColor" eSuperTypes="#//Command">
-    <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore">
-      <details key="constraints" value="regularTransCount"/>
-    </eAnnotations>
-    <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot">
-      <details key="regularTransCount" value="self.outgoingTransitions -> select(m | m.oclIsTypeOf(Regular) = true) -> size() &lt;= 1"/>
-    </eAnnotations>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="color" lowerBound="1" eType="#//Colours"
-        transient="true"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Wait" eSuperTypes="#//Command">
-    <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore">
-      <details key="constraints" value="timeNotNegative regularTransCount"/>
-    </eAnnotations>
-    <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot">
-      <details key="timeNotNegative" value="self.time >= 0"/>
-      <details key="regularTransCount" value="self.outgoingTransitions -> select(m | m.oclIsTypeOf(Regular) = true) -> size() &lt;= 1"/>
-    </eAnnotations>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="time" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="timeUnit" lowerBound="1"
-        eType="#//Time" containment="true"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Move" eSuperTypes="#//Command">
-    <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore">
-      <details key="constraints" value="velocityNotZero indefinitelyTrigg regularTransCount"/>
-    </eAnnotations>
-    <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot">
-      <details key="velocityNotZero" value="self.velocity &lt;> 0"/>
-      <details key="indefinitelyTrigg" value="if length = 0.0 and self.outgoingTransitions -> forAll(m | m.oclIsKindOf(Triggered) = true) then true elseif length &lt;> 0.0 then true else false endif"/>
-      <details key="regularTransCount" value="self.outgoingTransitions -> select(m | m.oclIsTypeOf(Regular) = true) -> size() &lt;= 1"/>
-    </eAnnotations>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="length" lowerBound="1"
-        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="velocity" lowerBound="1"
-        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="velocityUnits" lowerBound="1"
-        eType="#//Velocity" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="lengthUnits" lowerBound="1"
-        eType="#//Length" containment="true"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Rotate" eSuperTypes="#//Command">
-    <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore">
-      <details key="constraints" value="regularTransCount"/>
-    </eAnnotations>
-    <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot">
-      <details key="regularTransCount" value="self.outgoingTransitions -> select(m | m.oclIsTypeOf(Regular) = true) -> size() &lt;= 1"/>
-    </eAnnotations>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="angle" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="angleUnits" lowerBound="1"
-        eType="#//Angle" containment="true"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Terminate" eSuperTypes="#//Command">
-    <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore">
-      <details key="constraints" value="noOutTransitions"/>
-    </eAnnotations>
-    <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot">
-      <details key="noOutTransitions" value="self.outgoingTransitions -> isEmpty()"/>
-    </eAnnotations>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Repeat" eSuperTypes="#//Command">
-    <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore">
-      <details key="constraints" value="indefRepeats regularTransCount"/>
-    </eAnnotations>
-    <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore/OCL/Pivot">
-      <details key="indefRepeats" value="if self.numberOfReps = -1 and self.outgoingTransitions -> select(t: Transition | t.source -> exists(m | m.oclIsTypeOf(Repeat) = true)) -> notEmpty() then true elseif &#xA;&#x9;&#x9;self.numberOfReps &lt;> -1 then true else false endif"/>
-      <details key="regularTransCount" value="self.outgoingTransitions -> select(m | m.oclIsTypeOf(Regular) = true) -> size() &lt;= 1"/>
-    </eAnnotations>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="numberOfReps" lowerBound="1"
-        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="commands" upperBound="-1"
-        eType="#//Command" containment="true"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Triggered" eSuperTypes="#//Transition">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="operator" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EChar"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Regular" eSuperTypes="#//Transition"/>
-  <eClassifiers xsi:type="ecore:EClass" name="DistanceSensorTrigger" eSuperTypes="#//Triggered">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="length" eType="#//Length"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="dist" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="distancesensor" eType="#//DistanceSensor"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="CompassTrigger" eSuperTypes="#//Triggered">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="angles" eType="#//Angle"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="angle" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="compass" eType="#//Compass"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="GPSTrigger" eSuperTypes="#//Triggered">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="position" eType="#//Position"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="x" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloat"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="y" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloat"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="gps" eType="#//GPS"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Quantity"/>
-  <eClassifiers xsi:type="ecore:EClass" name="SingleQuantity" eSuperTypes="#//Quantity"/>
-  <eClassifiers xsi:type="ecore:EClass" name="Position" eSuperTypes="#//Quantity">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="x" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloat"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="y" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloat"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Time" eSuperTypes="#//SingleQuantity">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="units" lowerBound="1" eType="#//TimeUnits"
-        transient="true"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EEnum" name="TimeUnits" serializable="false">
-    <eLiterals name="NANOSECONDS"/>
-    <eLiterals name="MILLISECONDS"/>
-    <eLiterals name="SECONDS"/>
-    <eLiterals name="MINUTES"/>
-    <eLiterals name="HOURS"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Velocity" eSuperTypes="#//SingleQuantity">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="units" lowerBound="1" eType="#//VelocityUnits"
-        transient="true"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EEnum" name="VelocityUnits" serializable="false">
-    <eLiterals name="MILLIMETERS_PER_SECOND"/>
-    <eLiterals name="CENTIMETERS_PER_SECOND"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Length" eSuperTypes="#//SingleQuantity">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="units" lowerBound="1" eType="#//LengthUnits"
-        transient="true"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EEnum" name="LengthUnits" serializable="false">
-    <eLiterals name="MILLIMETERS"/>
-    <eLiterals name="CENTIMETERS"/>
-    <eLiterals name="METERS"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Angle" eSuperTypes="#//SingleQuantity">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="units" lowerBound="1" eType="#//AngleUnits"
-        transient="true"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EEnum" name="AngleUnits" serializable="false">
-    <eLiterals name="RADIANS"/>
-    <eLiterals name="DEGREES"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EEnum" name="Colours" serializable="false">
-    <eLiterals name="NONE"/>
-    <eLiterals name="RED"/>
-    <eLiterals name="GREEN"/>
-    <eLiterals name="BLUE"/>
-    <eLiterals name="YELLOW"/>
-  </eClassifiers>
-</ecore:EPackage>
+import ecore : 'http://www.eclipse.org/emf/2002/Ecore' ;
+
+package roverml : roverml = 'http://www.example.org/roverml'
+{
+	class System extends NamedElement
+	{
+		property programs : Program[*|1] { ordered composes };
+		property rovers : Rover[*|1] { ordered composes };
+	}
+	class Rover extends NamedElement
+	{
+		property components : Component[*|1] { ordered composes };
+		--Проверява всички елементи на ровъра и дали те имат различни имена. Прави се с цел, всяко име на компонент да е уникално:
+		invariant uniqueComponentNames: self.components -> forAll(c1, c2 | c1 <> c2 implies c1.name <> c2.name);
+		--Проверява всички инстанции на ровъра, дали някоя от тях е от тип мотор. Ако такъв съществува, всичко е точно. Необходимо е да има поне 1 мотор в робота:
+		invariant minNumMotors: self.components -> exists(m | m.oclIsTypeOf(Motor) = true);
+	}
+	class Program extends NamedElement
+	{
+		property roverExec : Rover[?];
+		property blocks : Block[?] { composes };
+	}
+	abstract class NamedElement
+	{
+		attribute name : String[1];
+	}
+	class Component extends NamedElement;
+	class Sensor extends Component;
+	class Actuator extends Component;
+	class GPS extends Sensor
+	{
+		attribute x : ecore::EFloat[*|1] { ordered !unique };
+		attribute y : ecore::EFloat[*|1] { ordered !unique };
+	}
+	class Compass extends Sensor
+	{
+		attribute angle : ecore::EInt[1];
+	}
+	class DistanceSensor extends Sensor
+	{
+		attribute distance : ecore::EDouble[1];
+	}
+	class Motor extends Actuator;
+	class Light extends Actuator;
+	class Block
+	{
+		property transitions : Transition[*|1] { ordered composes };
+		property commands : Command[*|1] { ordered composes };
+	}
+	class Command
+	{
+		property outgoingTransitions#source : Transition[*|1] { ordered };
+		property incomingTransitions#target : Transition[*|1] { ordered };
+		property components : Component[*|1] { ordered };
+	}
+	class Transition
+	{
+		property source#outgoingTransitions : Command[1];
+		property target#incomingTransitions : Command[1];
+	}
+	class SetLightColor extends Command
+	{
+		attribute color : Colours[1] { transient };
+		--Почти всички класове наследили класа Command имат по няколко изходящи транзиции,то тогава само 1 от тях може да е регулярна, другите могат единствено да бъдат Triggered. 
+		--Този ред взима всички изходящи транзиции от тип Regular в съответния клас и сравнява броят им. Броят им трябва да е по-малък или равен на 1:
+		invariant regularTransCount: self.outgoingTransitions -> select(m | m.oclIsTypeOf(Regular) = true) -> size() <= 1;
+	}
+	class Wait extends Command
+	{
+		attribute time : ecore::EInt[1];
+		property timeUnit : Time[1] { composes };
+		--Както е описано в условието, когато работим с време, то никога не трябва да е с отрицателна стойност. 
+		--Понеже ползваме време само в клас Wait, то там проверяваме атрибута Time дали е по-голям или равен на 0:
+		invariant timeNotNegative: self.time >= 0;
+		--Почти всички класове наследили класа Command имат по няколко изходящи транзиции,то тогава само 1 от тях може да е регулярна, другите могат единствено да бъдат Triggered. 
+		--Този ред взима всички изходящи транзиции от тип Regular в съответния клас и сравнява броят им. Броят им трябва да е по-малък или равен на 1:
+		invariant regularTransCount: self.outgoingTransitions -> select(m | m.oclIsTypeOf(Regular) = true) -> size() <= 1;
+	}
+	class Move extends Command
+	{
+		attribute length : ecore::EDouble[1];
+		attribute velocity : ecore::EDouble[1];
+		property velocityUnits : Velocity[1] { composes };
+		property lengthUnits : Length[1] { composes };
+		--Тук, подобно на предходния констрейнт, скоростта трябва да е различна от 0. Нея я ползваме само в класа Move, атрибута Velocity. 
+		--Съответно проверяваме дали е различен от 0:
+		invariant velocityNotZero: self.velocity <> 0;
+		--Тук целта е, ако на командата Move не е зададена дължина(дължината по подразбиране 0.0), то следващата транзиция може да бъде единствено Triggered. 
+		--Използваме If зада проверим първо, дали атрибута Length е нула и дали всички outgoingTransitions са от вид(Kind) Triggered. 
+		--Ако това е така, връщаме True(всичко е точно). В противен случай, проверяваме дали случайно не е пук зададена някаква дължина и пак връщаме True. Във всички останали случаи, връщаме False:
+		invariant
+		indefinitelyTrigg: if length = 0.0 and self.outgoingTransitions -> forAll(m | m.oclIsKindOf(Triggered) = true) then true elseif length <> 0.0 then true else false endif;
+		--Почти всички класове наследили класа Command имат по няколко изходящи транзиции,то тогава само 1 от тях може да е регулярна, другите могат единствено да бъдат Triggered. 
+		--Този ред взима всички изходящи транзиции от тип Regular в съответния клас и сравнява броят им. Броят им трябва да е по-малък или равен на 1:
+		invariant regularTransCount: self.outgoingTransitions -> select(m | m.oclIsTypeOf(Regular) = true) -> size() <= 1;
+	}
+	class Rotate extends Command
+	{
+		attribute angle : ecore::EInt[1];
+		property angleUnits : Angle[1] { composes };
+		--Почти всички класове наследили класа Command имат по няколко изходящи транзиции,то тогава само 1 от тях може да е регулярна, другите могат единствено да бъдат Triggered. 
+		--Този ред взима всички изходящи транзиции от тип Regular в съответния клас и сравнява броят им. Броят им трябва да е по-малък или равен на 1:
+		invariant regularTransCount: self.outgoingTransitions -> select(m | m.oclIsTypeOf(Regular) = true) -> size() <= 1;
+	}
+	class Terminate extends Command
+	{
+		--От класа Terminate не бива да има никакви изходящи транзиции. 
+		--Кода проверява изично, че outgoingTransitions не съществуват:
+		invariant noOutTransitions: self.outgoingTransitions -> isEmpty();
+	}
+	class Repeat extends Command
+	{
+		attribute numberOfReps : ecore::EInt[1];
+		property commands : Command[*|1] { ordered composes };
+		--Когато в класа Repeat стойността на атрибута numberOfReps е равна на -1, то тогава командата Repeat трябва да се повтаря до безкрайност.
+		--За целта ползваме If. Първо проверяваме дали numberOfReps е равен на -1 и дали в същото време от този клас има outgoingTransitions със зададена цел отново команда Repeat.
+		--Ако това е така, всичко е точно. Ако ли не, то проверяваме дали пък numberOfReps не е равен на нещо различно от -1. Тогава също всичко е точно. Във всички други случаи, имаме проблем:
+		invariant indefRepeats: if self.numberOfReps = -1 and self.outgoingTransitions -> select(t: Transition | t.source -> exists(m | m.oclIsTypeOf(Repeat) = true)) -> notEmpty() then true elseif 
+		self.numberOfReps <> -1 then true else false endif;
+		--Почти всички класове наследили класа Command имат по няколко изходящи транзиции,то тогава само 1 от тях може да е регулярна, другите могат единствено да бъдат Triggered. 
+		--Този ред взима всички изходящи транзиции от тип Regular в съответния клас и сравнява броят им. Броят им трябва да е по-малък или равен на 1:
+		invariant regularTransCount: self.outgoingTransitions -> select(m | m.oclIsTypeOf(Regular) = true) -> size() <= 1;
+	}
+	class Triggered extends Transition
+	{
+		attribute operator : ecore::EChar[?];
+	}
+	class Regular extends Transition;
+	class DistanceSensorTrigger extends Triggered
+	{
+		property length : Length[?];
+		attribute dist : ecore::EDouble[1];
+		property distancesensor : DistanceSensor[?];
+	}
+	class CompassTrigger extends Triggered
+	{
+		property angles : Angle[?];
+		attribute angle : ecore::EInt[1];
+		property compass : Compass[?];
+	}
+	class GPSTrigger extends Triggered
+	{
+		property position : Position[?];
+		attribute x : ecore::EFloat[1];
+		attribute y : ecore::EFloat[1];
+		property gps : GPS[?];
+	}
+	class Quantity;
+	class SingleQuantity extends Quantity;
+	class Position extends Quantity
+	{
+		attribute x : ecore::EFloat[1];
+		attribute y : ecore::EFloat[1];
+	}
+	class Time extends SingleQuantity
+	{
+		attribute units : TimeUnits[1] { transient };
+	}
+	enum TimeUnits
+	{
+		literal NANOSECONDS;
+		literal MILLISECONDS;
+		literal SECONDS;
+		literal MINUTES;
+		literal HOURS;
+	}
+	class Velocity extends SingleQuantity
+	{
+		attribute units : VelocityUnits[1] { transient };
+	}
+	enum VelocityUnits
+	{
+		literal MILLIMETERS_PER_SECOND;
+		literal CENTIMETERS_PER_SECOND;
+	}
+	class Length extends SingleQuantity
+	{
+		attribute units : LengthUnits[1] { transient };
+	}
+	enum LengthUnits
+	{
+		literal MILLIMETERS;
+		literal CENTIMETERS;
+		literal METERS;
+	}
+	class Angle extends SingleQuantity
+	{
+		attribute units : AngleUnits[1] { transient };
+	}
+	enum AngleUnits
+	{
+		literal RADIANS;
+		literal DEGREES;
+	}
+	enum Colours
+	{
+		literal NONE;
+		literal RED;
+		literal GREEN;
+		literal BLUE;
+		literal YELLOW;
+	}
+}

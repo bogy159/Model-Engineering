@@ -1,39 +1,36 @@
-Opisanie na constraints:
+﻿Описание на констрейнтс:
 
-1.Proverqva vsichki komponenti na Rover i dali te imat razlichni imena. Pravi se s cel vsqko ime na komponent da e unikalno:
+1.Проверява всички елементи на ровъра и дали те имат различни имена. Прави се с цел, всяко име на компонент да е уникално:
 invariant uniqueComponentNames: self.components -> forAll(c1, c2 | c1 <> c2 implies c1.name <> c2.name);
 
-2.Proverqva vsichi instancii na Rover dali nqkoq ot tqh e ot vid(Kind) Motor. Ako takuv sushtestvuva, vsichko e tochno. Poneje e neobhodimo da ima pone edin motor v robota:
-invariant minNumberMotors: Rover.allInstances()->exists(m | m.oclIsKindOf(Motor) = true);
+2.Проверява всички инстанции на ровъра, дали някоя от тях е от тип мотор. Ако такъв съществува, всичко е точно. Необходимо е да има поне 1 мотор в робота:
+invariant minNumMotors: self.components -> exists(m | m.oclIsTypeOf(Motor) = true);
 
-3.Kogato v klasa Command ima nqkolko Outgoing Transitions, togava samo edna ot tqh moje da e Regular, drugite trqbva da sa Triggered. 
-Tozi constraint vzima vsichki izhodqshti tranzicii ot tip Regular i sravnqva broqt im. Broqt im trqbva da e raven ili po-mauk ot 1:
-invariant regularTransCount: self.outgoingTransitions -> collect(oclIsKindOf(Regular)) -> size() <= 1;
+3.Почти всички класове наследили класа Command имат по няколко изходящи транзиции,то тогава само 1 от тях може да е регулярна, другите могат единствено да бъдат Triggered. 
+Този ред взима всички изходящи транзиции от тип Regular в съответния клас и сравнява броят им. Броят им трябва да е по-малък или равен на 1:
+invariant regularTransCount: self.outgoingTransitions -> select(m | m.oclIsTypeOf(Regular) = true) -> size() <= 1;
 
-4.Kakto e opisano po uslovie, kogato rabotim s vreme, to nikoga ne trqbva da e s otricatelna stoinost. 
-Poneje izpolzvame vreme samo v class Wait, to tam proverqvame atributa Time dali e po-golqm ili raven na 0:
+4.Както е описано в условието, когато работим с време, то никога не трябва да е с отрицателна стойност. 
+Понеже ползваме време само в клас Wait, то там проверяваме атрибута Time дали е по-голям или равен на 0:
 invariant timeNotNegative: self.time >= 0;
 
-5.Tuk podobno na predniq konstraint imam po uslovie che Velocity trqbva da e razlichno ot 0; Nego go polzvame samo v class Move, atribut Velocity. 
-Sytvetno proveqvame dali e razlichen ot 0:
+5.Тук, подобно на предходния констрейнт, скоростта трябва да е различна от 0. Нея я ползваме само в класа Move, атрибута Velocity. 
+Съответно проверяваме дали е различен от 0:
 invariant velocityNotZero: self.velocity <> 0;
 
-6.Tozi constraint moje bi e greshen! Negovata cel e, ako na komandata Move ne e zadadena duljina, to sledvashtiq transition trqbva da e Triggered. 
-Polzvam If Statement za da proverq purvo, dali attribute Length e Null i dali vsichki outgoingTransitions sa ot vid Triggered. 
-Ako tova e taka, vrushta True. ako ne e taka, proverqvam dali sluchaino ne e zadadena nqkakva duljina i pak vrushtam True. Vuv vsichki ostanali sluchai vrushtam False:
-invariant indefinitelyTrigg: if length = null and Move.allInstances()->forAll(m | m.oclIsKindOf(Triggered) = true) then true elseif length <> null then true else false endif;
+6.Тук целта е, ако на командата Move не е зададена дължина(дължината по подразбиране 0.0), то следващата транзиция може да бъде единствено Triggered. 
+Използваме If зада проверим първо, дали атрибута Length е нула и дали всички outgoingTransitions са от вид(Kind) Triggered. 
+Ако това е така, връщаме True(всичко е точно). В противен случай, проверяваме дали случайно не е пук зададена някаква дължина и пак връщаме True. Във всички останали случаи, връщаме False:
+invariant indefinitelyTrigg: if length = 0.0 and self.outgoingTransitions -> forAll(m | m.oclIsKindOf(Triggered) = true) then true elseif length <> 0.0 then true else false endif;
 
-7.Tozi constraint go nqmashe tochno v uslovieto, no predpolojih che e logichen. Ako sluchaino rabotim s ugli s merna edinica gradusi, to te trqbva da sa po-malki ot 360.
-Suotvetno proverqvame atributa Angle, koito se sudurja v class Rotate:
-invariant angleBelow360: self.angle < 360;
-
-8.Ot klasa Terminate ne biva da ima izhodqshti tranzicii. 
-Tova moje bi stava qsno i bez da se pravi constraint, no taka ili inache koda proverwa izrichno che outgoingTransitions ne sushtestvuvat:
+7.От класа Terminate не бива да има никакви изходящи транзиции. 
+Кода проверява изично, че outgoingTransitions не съществуват:
 invariant noOutTransitions: self.outgoingTransitions -> isEmpty();
 
-Imah oshte 2 idei za constraint, no ne mojeh da izmislq tochno kak da gi formuliram. Naprimer za vechniq repeat, kogato negoviq Count e raven na -1. 
-Nqmam ideq kak da zadam vechen cikul ili kakto ta trqbva da se napravi tova chudo.
-Otnosno "The sensor should fit the type of the triggered transition, i.e. a distance sensor trigger may only reference a distance sensor." 
-Tova mai sushto se podrazbira ot relaciite i za nego mai ne e neobhodim constraint.
-Za "Rotate command cannot be used twice in a row." si misleh neshto ot sorta na primera ot lekciite s tova kak chovek ne moje da si e sam dete na sebe si.
-Prosto da se zabranqt Outgoing Transition ot Rotate kum Rotate. Ne sum go implementiral.
+8.Когато в класа Repeat стойността на атрибута numberOfReps е равна на -1, то тогава командата Repeat трябва да се повтаря до безкрайност.
+За целта ползваме If. Първо проверяваме дали numberOfReps е равен на -1 и дали в същото време от този клас има outgoingTransitions със зададена цел отново команда Repeat.
+Ако това е така, всичко е точно. Ако ли не, то проверяваме дали пък numberOfReps не е равен на нещо различно от -1. Тогава също всичко е точно. Във всички други случаи, имаме проблем.
+invariant indefRepeats: if self.numberOfReps = -1 and self.outgoingTransitions -> select(t: Transition | t.source -> exists(m | m.oclIsTypeOf(Repeat) = true)) -> notEmpty() then true elseif self.numberOfReps <> -1 then true else false endif;
+
+Забележка: Не ми харесва, че не забранихме никъде Rotate да се изпулнява 2 пъти поред.
+Също не ми харесва констрейнт номер 8. Той залага на това, че всеки път, когато стойността е -1, то трябва да има някаква си изрично създадена транзиция от Repeat до Repeat. Тук ще имаме проблеми.
